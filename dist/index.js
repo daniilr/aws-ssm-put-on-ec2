@@ -42910,7 +42910,6 @@ async function transferFileViaSSM(instanceId, s3Result, remotePath, region) {
             Parameters: {
                 commands,
             },
-            Comment: `Transfer file from ${s3Result.s3Uri} to ${remotePath}`,
         });
         const response = await ssmClient.send(sendCommand);
         if (!response.Command?.CommandId) {
