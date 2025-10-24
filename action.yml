@@ -1,0 +1,27 @@
+name: Transfer File to EC2 via S3 and SSM
+description: Upload a file to S3 and transfer it to an EC2 instance using AWS Systems Manager (SSM)
+author: AWS SSM Transfer
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: upload-cloud
+  color: orange
+
+# Define your inputs here.
+inputs:
+  local_path:
+    description: "Path to the local file to transfer (directories not supported)"
+    required: true
+  remote_path:
+    description: "Path where the file should be placed on the remote EC2 instance"
+    required: true
+  instance:
+    description: "EC2 instance ID (e.g., i-1234567890abcdef0)"
+    required: true
+  intermediate_s3:
+    description: "S3 bucket name to use as intermediate storage (e.g., my-bucket or s3://my-bucket)"
+    required: true
+
+runs:
+  using: node24
+  main: dist/index.js
