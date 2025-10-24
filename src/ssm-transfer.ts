@@ -42,7 +42,6 @@ export async function transferFileViaSSM(
       Parameters: {
         commands,
       },
-      Comment: `Transfer file from ${s3Result.s3Uri} to ${remotePath}`,
     });
 
     const response: SendCommandCommandOutput =
