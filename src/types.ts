@@ -22,6 +22,12 @@ export interface ActionInputs {
    * Format: bucket-name or s3://bucket-name
    */
   intermediateS3: string;
+
+  /**
+   * AWS region (e.g., us-east-1)
+   * Optional - if not specified, uses default from environment
+   */
+  region?: string;
 }
 
 /**

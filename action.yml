@@ -9,18 +9,21 @@ branding:
 
 # Define your inputs here.
 inputs:
-  local_path:
+  local-path:
     description: "Path to the local file to transfer (directories not supported)"
     required: true
-  remote_path:
+  remote-path:
     description: "Path where the file should be placed on the remote EC2 instance"
     required: true
   instance:
     description: "EC2 instance ID (e.g., i-1234567890abcdef0)"
     required: true
-  intermediate_s3:
+  intermediate-s3:
     description: "S3 bucket name to use as intermediate storage (e.g., my-bucket or s3://my-bucket)"
     required: true
+  region:
+    description: "AWS region (e.g., us-east-1). If not specified, uses the default AWS region from environment"
+    required: false
 
 runs:
   using: node24

@@ -8,11 +8,13 @@ import type { S3UploadResult } from "./types.js";
  * Uploads a local file to S3 bucket
  * @param localPath - Path to the local file to upload
  * @param bucketName - S3 bucket name (will strip s3:// prefix if present)
+ * @param region - Optional AWS region
  * @returns S3UploadResult containing bucket, key, and S3 URI
  */
 export async function uploadFileToS3(
   localPath: string,
   bucketName: string,
+  region?: string,
 ): Promise<S3UploadResult> {
   // Strip s3:// prefix if present
   const bucket = bucketName.replace(/^s3:\/\//, "");
@@ -36,7 +38,7 @@ export async function uploadFileToS3(
 
   core.info(`Uploading ${localPath} to s3://${bucket}/${key}`);
 
-  const s3Client = new S3Client({});
+  const s3Client = new S3Client(region ? { region } : {});
 
   try {
     // Read file contents

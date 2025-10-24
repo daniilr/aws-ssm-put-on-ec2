@@ -12,14 +12,16 @@ import type { S3UploadResult, SSMCommandResult } from "./types.js";
  * @param instanceId - EC2 instance ID
  * @param s3Result - S3 upload result containing bucket and key
  * @param remotePath - Destination path on EC2 instance
+ * @param region - Optional AWS region
  * @returns SSMCommandResult with command execution details
  */
 export async function transferFileViaSSM(
   instanceId: string,
   s3Result: S3UploadResult,
   remotePath: string,
+  region?: string,
 ): Promise<SSMCommandResult> {
-  const ssmClient = new SSMClient({});
+  const ssmClient = new SSMClient(region ? { region } : {});
 
   // Construct AWS CLI command to download from S3 to EC2
   const commands = [

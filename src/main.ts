@@ -8,16 +8,18 @@ import { transferFileViaSSM } from "./ssm-transfer.js";
  * @returns ActionInputs object with all required parameters
  */
 function getInputs(): ActionInputs {
-  const localPath = core.getInput("local_path", { required: true });
-  const remotePath = core.getInput("remote_path", { required: true });
+  const localPath = core.getInput("local-path", { required: true });
+  const remotePath = core.getInput("remote-path", { required: true });
   const instance = core.getInput("instance", { required: true });
-  const intermediateS3 = core.getInput("intermediate_s3", { required: true });
+  const intermediateS3 = core.getInput("intermediate-s3", { required: true });
+  const region = core.getInput("region", { required: false }) || undefined;
 
   return {
     localPath,
     remotePath,
     instance,
     intermediateS3,
+    region,
   };
 }
 
@@ -38,18 +40,27 @@ export async function run(): Promise<void> {
     core.info(`Remote path: ${inputs.remotePath}`);
     core.info(`Instance ID: ${inputs.instance}`);
     core.info(`S3 bucket: ${inputs.intermediateS3}`);
+    if (inputs.region) {
+      core.info(`AWS Region: ${inputs.region}`);
+    }
 
     // Step 1: Upload file to S3
     core.startGroup("Uploading file to S3");
     const s3Result = await uploadFileToS3(
       inputs.localPath,
       inputs.intermediateS3,
+      inputs.region,
     );
     core.endGroup();
 
     // Step 2: Transfer file from S3 to EC2 via SSM
     core.startGroup("Transferring file to EC2 instance via SSM");
-    await transferFileViaSSM(inputs.instance, s3Result, inputs.remotePath);
+    await transferFileViaSSM(
+      inputs.instance,
+      s3Result,
+      inputs.remotePath,
+      inputs.region,
+    );
     core.endGroup();
 
     core.info("File transfer completed successfully!");
